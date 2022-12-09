@@ -19,10 +19,13 @@ if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').match
 
 const handleSubmit = e =>{
     e.preventDefault()
-    
+
+    // checks to see if there's any agent divs already inplace
+
     let agentContainer = document.getElementById("agent-container")
     let nestedAgent = agentContainer.querySelectorAll('div')
 
+    // if there's any agent divs this iterates over all divs and removes all previous searched agents
     if(nestedAgent.length > 0){
       for (var i = 0; i < nestedAgent.length; i++) {
         nestedAgent[i].remove();
@@ -30,6 +33,7 @@ const handleSubmit = e =>{
     }
 
     const searchTerm = e.target.search_req.value
+
    fetch("https://valorant-api.com/v1/agents", {
     method:"GET"
    })
@@ -72,6 +76,7 @@ const handleSubmit = e =>{
    
    )}
 
+  //  this renders all agents on refresh so the user knows what to input into the search bar.
 const renderAgents = () =>{
     fetch("https://valorant-api.com/v1/agents", {
         method:"GET"
@@ -110,6 +115,7 @@ const renderAgents = () =>{
 const form = document.getElementById("form")
 form.addEventListener("submit", handleSubmit)
 
+// this renders all agents if the form has not been submitted, once submitted the filtered agents show.
 if(!form.onsubmit){
     renderAgents()
 }
