@@ -38,6 +38,13 @@ const handleSubmit = e =>{
     let filteredAgent = agents.data.filter(agent =>{
       return agent.displayName.toLowerCase() === searchTerm.toLowerCase() && agent.isPlayableCharacter === true
     })
+
+    if(searchTerm === ""){
+      alert("Please input a valid agent name!")
+    } else if(filteredAgent.length === 0){
+      alert("make sure the name you entered is spelt correctly!")
+
+    }
         // Create a div element
         const div = document.createElement('div');
         div.classList.add("agent")
