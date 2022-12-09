@@ -1,0 +1,111 @@
+/* Resetting the default css styles making it easier to edit rem/em values, change text decoration as well as box-sizing */
+*, *::before, *::after {
+    box-sizing: border-box;
+  }
+  * {
+    margin: 0;
+  }
+  html, body {
+    height: 100%;
+  }
+  body {
+    line-height: 1.5;
+    -webkit-font-smoothing: antialiased;
+  }
+  img, picture, video, canvas, svg {
+    display: block;
+    max-width: 100%;
+  }
+  input, button, textarea, select {
+    font: inherit;
+  }
+  p, h1, h2, h3, h4, h5, h6 {
+    overflow-wrap: break-word;
+    font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif  }
+  #root, #__next {
+    isolation: isolate;
+  }
+  ul{
+    list-style-type: none;
+  }
+
+  input{
+    margin-right: 10px;
+  }
+
+  body {
+    background: linear-gradient(to bottom, lightblue, white);
+    color: #333;
+    transition: 0.5s ease-in-out;
+    height: 100vh;
+  }
+
+button{
+  opacity: 75%;
+  cursor: pointer;
+}
+  
+#navbar{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px 50px;
+}
+
+#navbar > form > label{
+    margin-right: 10px;
+}
+
+#filter-list{
+  display: flex;
+}
+
+
+/* Style for the button */
+#dark-mode-button {
+  font-size: 16px;
+  color: #fff;
+  background-color: #333;
+  padding: 10px 20px;
+  border: none;
+  cursor: pointer;
+  border-radius: 5px;
+}
+
+/* Styles for dark mode */
+.dark-mode {
+  background: linear-gradient(to bottom, rgb(121, 121, 121), rgb(0, 0, 0));
+  color: #fff;
+  transition: 0.5s ease-in-out;
+  height: 100vh;
+}
+
+
+#main-content{
+    max-width: 80vw;
+    margin: auto;
+    text-align: center;
+    margin-top: 100px;
+    background-color: rgba(216, 216, 216, 0.712);
+    padding: 10px;
+    border-radius: 5px;
+    
+}
+
+#main-content > h1{
+    margin-bottom: 20px;
+}
+
+#agent-container{
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+#agent-container > div{
+  padding: 5px;
+}
+
+#agent-container > div:hover{
+  cursor: pointer;
+}
