@@ -32,8 +32,10 @@ const handleSubmit = e =>{
       }
     }
 
+    // stores the user input into searchTerm
     const searchTerm = e.target.search_req.value
 
+    // fetching the api using synchronous code
    fetch("https://valorant-api.com/v1/agents", {
     method:"GET"
    })
@@ -43,6 +45,7 @@ const handleSubmit = e =>{
       return agent.displayName.toLowerCase() === searchTerm.toLowerCase() && agent.isPlayableCharacter === true
     })
 
+    // some logic to make sure user is spelling correctly or if theres no input on submit
     if(searchTerm === ""){
       alert("Please input a valid agent name!")
     } else if(filteredAgent.length === 0){
@@ -75,6 +78,25 @@ const handleSubmit = e =>{
    
    
    )}
+
+// this is how you would write the function using async/await
+   const getDataFromAPI = async() => {
+    try {
+      // Send a GET request to the API
+      const response = await fetch('https://valorant-api.com/v1/agents');
+  
+      // If the response is successful, parse the JSON data
+      const data = await response.json();
+  
+      // Return the data
+      return data;
+    } catch (error) {
+      // If there is an error, log it to the console
+      console.error(error);
+    }
+  }
+  
+
 
   //  this renders all agents on refresh so the user knows what to input into the search bar.
 const renderAgents = () =>{
