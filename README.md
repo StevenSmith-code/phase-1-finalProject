@@ -1,6 +1,6 @@
-# Foobar
+# Final Project Phase 1 
 
-This is my final project for phase-1 at Flatiron! it is a Valorant agent filter
+This is my final project for phase-1 at Flatiron! it is a Valorant agent filter that filters out any agent when you search!
 
 ## Installation
 
