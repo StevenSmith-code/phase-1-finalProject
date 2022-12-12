@@ -109,3 +109,10 @@ button{
 #agent-container > div:hover{
   cursor: pointer;
 }
+
+.agent {
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  align-items: center;
+}

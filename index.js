@@ -52,6 +52,7 @@ const handleSubmit = e =>{
       alert("make sure the name you entered is spelt correctly!")
 
     }
+    console.log(filteredAgent)
         // Create a div element
         const div = document.createElement('div');
         div.classList.add("agent")
@@ -64,13 +65,21 @@ const handleSubmit = e =>{
         img.height = 125;
 
         // Create a p element and set its text content
-        const p = document.createElement("p")
-        p.innerText=filteredAgent[0].displayName
+        const agentName = document.createElement("p")
+        const agentRole = document.createElement("p")
+        const agentDescription = document.createElement("p")
+        agentName.innerText=filteredAgent[0].displayName
+        agentRole.innerText=filteredAgent[0].role.displayName
+        agentDescription.innerText=filteredAgent[0].description
+        
+        
 
           
       // Append the image and p elements to the div
       div.appendChild(img);
-      div.appendChild(p);
+      div.appendChild(agentName);
+      div.appendChild(agentRole);
+      div.appendChild(agentDescription);
       
       // Append the div to the DOM
       document.getElementById("agent-container").appendChild(div);
