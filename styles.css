@@ -97,13 +97,15 @@ button{
 }
 
 #agent-container{
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  
 }
 
 #agent-container > div{
   padding: 5px;
+  justify-self: center;
+  align-self: center;
 }
 
 #agent-container > div:hover{

@@ -17,78 +17,71 @@ if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').match
 
 // handleSubmit runs whenever user submits their input which then filters it with the fetched api
 
-const handleSubmit = e =>{
-    e.preventDefault()
+const handleSubmit = async (e) => {
+  e.preventDefault();
 
-    // checks to see if there's any agent divs already inplace
+  // checks to see if there's any agent divs already inplace
+  let nestedAgent = document.querySelectorAll("#agent-container div");
 
-    let agentContainer = document.getElementById("agent-container")
-    let nestedAgent = agentContainer.querySelectorAll('div')
+  // if there's any agent divs this iterates over all divs and removes all previous searched agents
+  if (nestedAgent.length > 0) {
+    nestedAgent.forEach((el) => el.remove());
+  }
 
-    // if there's any agent divs this iterates over all divs and removes all previous searched agents
-    if(nestedAgent.length > 0){
-      for (var i = 0; i < nestedAgent.length; i++) {
-        nestedAgent[i].remove();
-      }
-    }
+  // stores the user input into searchTerm
+  const searchTerm = e.target.search_req.value;
 
-    // stores the user input into searchTerm
-    const searchTerm = e.target.search_req.value
+  try {
+    // Use the async getDataFromAPI function to fetch the data from the API
+    const agents = await getDataFromAPI();
+    const filteredAgent = agents.data.find((agent) => {
+      return (
+        agent.displayName.toLowerCase() === searchTerm.toLowerCase() &&
+        agent.isPlayableCharacter === true
+      );
+    });
 
-    // fetching the api using synchronous code
-   fetch("https://valorant-api.com/v1/agents", {
-    method:"GET"
-   })
-   .then(res => res.json())
-   .then(agents => {
-    let filteredAgent = agents.data.filter(agent =>{
-      return agent.displayName.toLowerCase() === searchTerm.toLowerCase() && agent.isPlayableCharacter === true
-    })
+    // some logic to make sure user is spelling correctly or if there's no input on submit
+    if (searchTerm === "") {
+      alert("Please input a valid agent name!");
+    } else if (!filteredAgent) {
+      alert("make sure the name you entered is spelt correctly!");
+    } else {
+      // Create a div element
+      const div = document.createElement("div");
+      div.classList.add("agent");
 
-    // some logic to make sure user is spelling correctly or if theres no input on submit
-    if(searchTerm === ""){
-      alert("Please input a valid agent name!")
-    } else if(filteredAgent.length === 0){
-      alert("make sure the name you entered is spelt correctly!")
+      // Create an image element and set its src attribute
+      const img = document.createElement("img");
+      img.src = filteredAgent.displayIcon;
+      img.alt = filteredAgent.displayName;
+      img.width = 125;
+      img.height = 125;
 
-    }
-    console.log(filteredAgent)
-        // Create a div element
-        const div = document.createElement('div');
-        div.classList.add("agent")
+      // Create a p element and set its text content
+      const agentName = document.createElement("p");
+      const agentRole = document.createElement("p");
+      const agentDescription = document.createElement("p");
+      agentName.innerText = filteredAgent.displayName;
+      agentRole.innerText = filteredAgent.role.displayName;
+      agentDescription.innerText = filteredAgent.description;
 
-        // Create an image element and set its src attribute
-        const img = document.createElement('img');
-        img.src = filteredAgent[0].displayIcon;
-        img.alt = filteredAgent[0].displayName;
-        img.width = 125;
-        img.height = 125;
-
-        // Create a p element and set its text content
-        const agentName = document.createElement("p")
-        const agentRole = document.createElement("p")
-        const agentDescription = document.createElement("p")
-        agentName.innerText=filteredAgent[0].displayName
-        agentRole.innerText=filteredAgent[0].role.displayName
-        agentDescription.innerText=filteredAgent[0].description
-        
-        
-
-          
       // Append the image and p elements to the div
       div.appendChild(img);
       div.appendChild(agentName);
       div.appendChild(agentRole);
       div.appendChild(agentDescription);
-      
+
       // Append the div to the DOM
       document.getElementById("agent-container").appendChild(div);
-   }
-   
-   
-   )}
+    }
+  } catch (error) {
+    console.error(error);
+  }
+};
 
-// this is how you would write the function using async/await
+
+// this function makes it simpler to fetch data.
    const getDataFromAPI = async() => {
     try {
       // Send a GET request to the API
@@ -108,40 +101,46 @@ const handleSubmit = e =>{
 
 
   //  this renders all agents on refresh so the user knows what to input into the search bar.
-const renderAgents = () =>{
-    fetch("https://valorant-api.com/v1/agents", {
-        method:"GET"
-    })
-    .then(res => res.json())
-    .then(agents => {
-        
-     return agents.data.map(agent =>{
-        // Create a div element
-        const div = document.createElement('div');
-
-        // Create an image element and set its src attribute
-        const img = document.createElement('img');
-        img.src = agent.displayIcon;
-        img.alt = agent.displayName;
-        img.width = 125;
-        img.height = 125;
-
-        // Create a p element and set its text content
-        const p = document.createElement("p")
-        p.innerText=agent.displayName
-
-          
-      // Append the image and p elements to the div
-      div.appendChild(img);
-      div.appendChild(p);
-      
-      // Append the div to the DOM
-      document.getElementById("agent-container").appendChild(div);
-     })
-        
-      
-    })
-}
+  const renderAgents = async () => {
+    try {
+      // Use the async getDataFromAPI function to fetch the data from the API
+      const agents = await getDataFromAPI();
+      const agentElements = agents.data
+        .filter((agent) => agent.isPlayableCharacter)
+        .map((agent) => {
+          // Create a div element
+          const div = document.createElement("div");
+          div.classList.add("agent");
+  
+          // Create an image element and set its src attribute
+          const img = document.createElement("img");
+          img.src = agent.displayIcon;
+          img.alt = agent.displayName;
+          img.width = 125;
+          img.height = 125;
+  
+          // Create a p element and set its text content
+          const agentName = document.createElement("p");
+          const agentRole = document.createElement("p");
+          agentName.innerText = agent.displayName;
+          agentRole.innerText = agent.role.displayName;
+  
+          // Append the image and p elements to the div
+          div.appendChild(img);
+          div.appendChild(agentName);
+          div.appendChild(agentRole);
+  
+          // Return the div element
+          return div;
+        });
+  
+      // Append the agent elements to the DOM
+      document.getElementById("agent-container").append(...agentElements);
+    } catch (error) {
+      console.error(error);
+    }
+  };
+  
 
 const form = document.getElementById("form")
 form.addEventListener("submit", handleSubmit)
