@@ -15,19 +15,32 @@ if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').match
   }
 }
 
+
+const clearAgentContainer = () =>{
+   // checks to see if there's any agent divs already inplace
+   let nestedAgent = document.querySelectorAll("#agent-container div");
+
+   // if there's any agent divs this iterates over all divs and removes all previous searched agents
+   if (nestedAgent.length > 0) {
+     nestedAgent.forEach((el) => el.remove());
+
+   }
+
+}
+
+
 // handleSubmit runs whenever user submits their input which then filters it with the fetched api
 
 const handleSubmit = async (e) => {
+
+  const homebtn = document.getElementById("home-btn")
+      homebtn.addEventListener("click", renderAgents);
+      document.getElementById("agent-container").style.gridTemplateColumns ='repeat(4, 1fr)'
+
   e.preventDefault();
 
-  // checks to see if there's any agent divs already inplace
-  let nestedAgent = document.querySelectorAll("#agent-container div");
-
-  // if there's any agent divs this iterates over all divs and removes all previous searched agents
-  if (nestedAgent.length > 0) {
-    nestedAgent.forEach((el) => el.remove());
-  }
-
+  clearAgentContainer()
+  
   // stores the user input into searchTerm
   const searchTerm = e.target.search_req.value;
 
@@ -44,8 +57,10 @@ const handleSubmit = async (e) => {
     // some logic to make sure user is spelling correctly or if there's no input on submit
     if (searchTerm === "") {
       alert("Please input a valid agent name!");
+      renderAgents()
     } else if (!filteredAgent) {
       alert("make sure the name you entered is spelt correctly!");
+      renderAgents()
     } else {
       // Create a div element
       const div = document.createElement("div");
@@ -74,6 +89,8 @@ const handleSubmit = async (e) => {
 
       // Append the div to the DOM
       document.getElementById("agent-container").appendChild(div);
+      document.getElementById("agent-container").style.gridTemplateColumns ='repeat(1, 1fr)'
+      
     }
   } catch (error) {
     console.error(error);
@@ -102,6 +119,13 @@ const handleSubmit = async (e) => {
 
   //  this renders all agents on refresh so the user knows what to input into the search bar.
   const renderAgents = async () => {
+    const homebtn = document.getElementById("home-btn")
+    homebtn.addEventListener("click", renderAgents);
+    document.getElementById("agent-container").style.gridTemplateColumns ='repeat(4, 1fr)'
+
+
+    clearAgentContainer()
+
     try {
       // Use the async getDataFromAPI function to fetch the data from the API
       const agents = await getDataFromAPI();
@@ -139,6 +163,10 @@ const handleSubmit = async (e) => {
     } catch (error) {
       console.error(error);
     }
+
+    
+
+
   };
   
 
